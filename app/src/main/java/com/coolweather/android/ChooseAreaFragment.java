@@ -1,6 +1,7 @@
 package com.coolweather.android;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,6 @@ public class ChooseAreaFragment extends Fragment {
     private TextView titleText;
     private Button backButton;
     private ListView listView;
-
     private ArrayAdapter<String> adapter;
     private List<String> datalist = new ArrayList<>();
 
@@ -66,9 +66,9 @@ public class ChooseAreaFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.choose_area, container, false);
-        titleText = (TextView) view.findViewById(R.id.tltie_text);
-        backButton = (Button) view.findViewById(R.id.back_button);
-        listView = (ListView) view.findViewById(R.id.list_view);
+        titleText = view.findViewById(R.id.tltie_text);
+        backButton = view.findViewById(R.id.back_button);
+        listView = view.findViewById(R.id.list_view);
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, datalist);
         listView.setAdapter(adapter);
         return view;
@@ -86,6 +86,12 @@ public class ChooseAreaFragment extends Fragment {
                 } else if (currentlevel == LEVEL_CITY) {
                     selectCity = cityList.get(position);
                     queryCounties();
+                }else if (currentlevel==LEVEL_COUNTRY){
+                    String weatherId=countyList.get(position).getWeatherId() ;
+                    Intent intent=new Intent(getActivity(),WeatherActivity.class);
+                    intent.putExtra("weather_id",weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
